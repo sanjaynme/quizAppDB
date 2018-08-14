@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import java.util.List;
 
+import np.edu.nast.demoapp.quizapp.contracts.AppContract;
 import np.edu.nast.demoapp.quizapp.db.GKDataSource;
 import np.edu.nast.demoapp.quizapp.db.QuizDataSource;
 import np.edu.nast.demoapp.quizapp.db.ScienceDataSource;
@@ -21,12 +22,13 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
     SQLiteDatabase sqLiteDatabase;
 
-    Button SaveButtonInSQLite, ShowSQLiteDataInListView;
+    Button SaveButtonInSQLite, btnQuiz, btnGk, btnScience;
 
     ProgressDialog progressDialog;
     private GKDataSource gkDataSource;
     private ScienceDataSource scienceDataSource;
     private QuizDataSource quizDataSource;
+    SharedPreferenceManager sharedPreferenceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,19 +38,14 @@ public class MainActivity extends AppCompatActivity {
         scienceDataSource = new ScienceDataSource(MainActivity.this);
         quizDataSource = new QuizDataSource(MainActivity.this);
         SaveButtonInSQLite = findViewById(R.id.button);
-
-        ShowSQLiteDataInListView = findViewById(R.id.button2);
+        sharedPreferenceManager = new SharedPreferenceManager(this);
+        btnQuiz = findViewById(R.id.btn_quiz);
+        btnGk = findViewById(R.id.btn_gk);
+        btnScience = findViewById(R.id.btn_science);
 
         SaveButtonInSQLite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-//
-//                SQLiteDataBaseBuild();
-//
-//                SQLiteTableBuild();
-//
-//                DeletePreviousData();
                 progressDialog = new ProgressDialog(MainActivity.this);
                 progressDialog.setTitle("LOADING");
                 progressDialog.setMessage("Please Wait");
@@ -68,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("", "Error msg is :::" + t.getMessage());
                     }
                 });
-
                 ApiService.getServiceClass().getGkPost().enqueue(new Callback<List<ApiObject>>() {
                     @Override
                     public void onResponse(Call<List<ApiObject>> call, Response<List<ApiObject>> response) {
@@ -104,16 +100,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ShowSQLiteDataInListView.setOnClickListener(new View.OnClickListener() {
+        btnQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, ShowDataActivity.class);
+                sharedPreferenceManager.setKeyValues(AppContract.PreferencesKeys.SUBJECT_QUIZ, AppContract.PreferencesValues.QUIZ);
                 startActivity(intent);
-
+            }
+        }); btnGk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ShowDataActivity.class);
+                sharedPreferenceManager.setKeyValues(AppContract.PreferencesKeys.SUBJECT_GK, AppContract.PreferencesValues.GK);
+                startActivity(intent);
+            }
+        }); btnScience.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ShowDataActivity.class);
+                sharedPreferenceManager.setKeyValues(AppContract.PreferencesKeys.SUBJECT_SCIENCE, AppContract.PreferencesValues.SCIENCE);
+                startActivity(intent);
             }
         });
-
-
     }
 
     private void setGKData(Response<List<ApiObject>> response, ApiObject question) {

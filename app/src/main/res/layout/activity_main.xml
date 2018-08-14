@@ -21,12 +21,30 @@
         android:text="STORE JSON PARSING DATA INTO SQLITE DB" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
+        android:id="@+id/btn_quiz"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/button"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="13dp"
-        android:text="SHOW LISTVIEW AFTER STORING JSON DATA INTO SQLITE DATABASE" />
+        android:text="Quiz" />
+
+    <Button
+        android:id="@+id/btn_gk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_quiz"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
+        android:text="GK" />
+
+    <Button
+        android:id="@+id/btn_science"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_gk"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
+        android:text="Science" />
 
 </RelativeLayout>
